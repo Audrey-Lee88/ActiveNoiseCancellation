@@ -22,6 +22,7 @@
 		2F02859A29A047C2003A4149 /* tone_500_16000.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2F02858B29A047C1003A4149 /* tone_500_16000.caf */; };
 		2F02859B29A047C2003A4149 /* tone_500_3000.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2F02858C29A047C2003A4149 /* tone_500_3000.caf */; };
 		2F02859C29A047C2003A4149 /* tone_250_32000.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2F02858D29A047C2003A4149 /* tone_250_32000.caf */; };
+		2F40050629BB0640007781BD /* NoiseCancel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2F40050429BB0640007781BD /* NoiseCancel.cpp */; };
 		2F48CBED29BAF0D90069D6C5 /* echo_file1.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2F48CBEC29BAF0D90069D6C5 /* echo_file1.caf */; };
 		2FD09A75299F50EC003CD6E0 /* FirInterp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2FD09A74299F50EC003CD6E0 /* FirInterp.cpp */; };
 		2FD09A7C299F6461003CD6E0 /* AudioProcessing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2FD09A7B299F6461003CD6E0 /* AudioProcessing.cpp */; };
@@ -87,6 +88,8 @@
 		2F02858B29A047C1003A4149 /* tone_500_16000.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = tone_500_16000.caf; sourceTree = "<group>"; };
 		2F02858C29A047C2003A4149 /* tone_500_3000.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = tone_500_3000.caf; sourceTree = "<group>"; };
 		2F02858D29A047C2003A4149 /* tone_250_32000.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = tone_250_32000.caf; sourceTree = "<group>"; };
+		2F40050429BB0640007781BD /* NoiseCancel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NoiseCancel.cpp; sourceTree = "<group>"; };
+		2F40050529BB0640007781BD /* NoiseCancel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = NoiseCancel.hpp; sourceTree = "<group>"; };
 		2F48CBEC29BAF0D90069D6C5 /* echo_file1.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = echo_file1.caf; sourceTree = "<group>"; };
 		2FD09A73299F50EC003CD6E0 /* FirInterp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FirInterp.hpp; sourceTree = "<group>"; };
 		2FD09A74299F50EC003CD6E0 /* FirInterp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FirInterp.cpp; sourceTree = "<group>"; };
@@ -148,6 +151,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2F40050329BB061A007781BD /* Active_Noise_Cancellation */ = {
+			isa = PBXGroup;
+			children = (
+				2F40050429BB0640007781BD /* NoiseCancel.cpp */,
+				2F40050529BB0640007781BD /* NoiseCancel.hpp */,
+			);
+			path = Active_Noise_Cancellation;
+			sourceTree = "<group>";
+		};
 		2FF59EA5299F453900CBF47E /* Lab5 */ = {
 			isa = PBXGroup;
 			children = (
@@ -178,6 +190,7 @@
 		D4E47451297529AB009F205D = {
 			isa = PBXGroup;
 			children = (
+				2F40050329BB061A007781BD /* Active_Noise_Cancellation */,
 				2FF90E8929BAFADB00972802 /* Echo_Cancellation */,
 				2FF59EA9299F4FDD00CBF47E /* Lab3 */,
 				2FF59EA5299F453900CBF47E /* Lab5 */,
@@ -452,6 +465,7 @@
 				D4E4749B29760698009F205D /* LoggingUtilities.cpp in Sources */,
 				D4E4745E297529AB009F205D /* EE264_labApp.swift in Sources */,
 				D4E4749629760649009F205D /* CPP-Wrapper.h in Sources */,
+				2F40050629BB0640007781BD /* NoiseCancel.cpp in Sources */,
 				D4E474CB29760700009F205D /* FftModule.cpp in Sources */,
 				2FF59EA8299F455200CBF47E /* OlaFftFilter.cpp in Sources */,
 				D4E474A6297606AD009F205D /* CAStreamBasicDescription.swift in Sources */,
