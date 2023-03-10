@@ -27,6 +27,7 @@
 		2FD09A7C299F6461003CD6E0 /* AudioProcessing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2FD09A7B299F6461003CD6E0 /* AudioProcessing.cpp */; };
 		2FD09A7D299F6461003CD6E0 /* AudioProcessing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2FD09A7B299F6461003CD6E0 /* AudioProcessing.cpp */; };
 		2FF59EA8299F455200CBF47E /* OlaFftFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2FF59EA6299F455200CBF47E /* OlaFftFilter.cpp */; };
+		2FF90E8C29BAFAFD00972802 /* EchoCancel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2FF90E8A29BAFAFD00972802 /* EchoCancel.cpp */; };
 		D42502232986FA0E006AF28F /* CPP-Wrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = D4E4749229760649009F205D /* CPP-Wrapper.mm */; };
 		D42502242986FA0F006AF28F /* CPP-Wrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = D4E4749229760649009F205D /* CPP-Wrapper.mm */; };
 		D4E4745E297529AB009F205D /* EE264_labApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E4745D297529AB009F205D /* EE264_labApp.swift */; };
@@ -92,6 +93,8 @@
 		2FD09A7B299F6461003CD6E0 /* AudioProcessing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AudioProcessing.cpp; sourceTree = "<group>"; };
 		2FF59EA6299F455200CBF47E /* OlaFftFilter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OlaFftFilter.cpp; sourceTree = "<group>"; };
 		2FF59EA7299F455200CBF47E /* OlaFftFilter.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = OlaFftFilter.hpp; sourceTree = "<group>"; };
+		2FF90E8A29BAFAFD00972802 /* EchoCancel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EchoCancel.cpp; sourceTree = "<group>"; };
+		2FF90E8B29BAFAFD00972802 /* EchoCancel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EchoCancel.hpp; sourceTree = "<group>"; };
 		D4E4745A297529AB009F205D /* EE264_lab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EE264_lab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4E4745D297529AB009F205D /* EE264_labApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EE264_labApp.swift; sourceTree = "<group>"; };
 		D4E4745F297529AB009F205D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -163,9 +166,19 @@
 			path = Lab3;
 			sourceTree = "<group>";
 		};
+		2FF90E8929BAFADB00972802 /* Echo_Cancellation */ = {
+			isa = PBXGroup;
+			children = (
+				2FF90E8A29BAFAFD00972802 /* EchoCancel.cpp */,
+				2FF90E8B29BAFAFD00972802 /* EchoCancel.hpp */,
+			);
+			path = Echo_Cancellation;
+			sourceTree = "<group>";
+		};
 		D4E47451297529AB009F205D = {
 			isa = PBXGroup;
 			children = (
+				2FF90E8929BAFADB00972802 /* Echo_Cancellation */,
 				2FF59EA9299F4FDD00CBF47E /* Lab3 */,
 				2FF59EA5299F453900CBF47E /* Lab5 */,
 				D4E4745C297529AB009F205D /* EE264_lab */,
@@ -446,6 +459,7 @@
 				2FD09A75299F50EC003CD6E0 /* FirInterp.cpp in Sources */,
 				D4E474CA29760700009F205D /* FreqDomainProcessing.cpp in Sources */,
 				D4E474A3297606AD009F205D /* NumTypes+Conversion.swift in Sources */,
+				2FF90E8C29BAFAFD00972802 /* EchoCancel.cpp in Sources */,
 				2FD09A7C299F6461003CD6E0 /* AudioProcessing.cpp in Sources */,
 				D4E474A7297606AD009F205D /* CADebugMacros.swift in Sources */,
 				D42502232986FA0E006AF28F /* CPP-Wrapper.mm in Sources */,
