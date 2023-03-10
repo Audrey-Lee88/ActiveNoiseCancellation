@@ -19,6 +19,7 @@
 #include "FreqDomainProcessing.hpp"
 #include "OlaFftFilter.hpp"
 #include "FirInterp.hpp"
+#include "EchoCancel.hpp"
 // ---> Your code here! - Lab 5
 
 
@@ -50,6 +51,7 @@ class AudioProcessing {
     FreqDomainProcessing freqDomainProc;
     FirInterp fir1;
     OlaFftFilter olafilt;
+    EchoCancel echocancel;
     
     
 public:

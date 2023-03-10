@@ -59,6 +59,7 @@ void AudioProcessing::setup(int outputSamplingRateParam,
     
     // ---> Your code here! - Lab 5
     olafilt.setup();
+    echocancel.setup();
     
 }
 
@@ -130,6 +131,10 @@ void AudioProcessing::processAudio(int16_t *outputData,
     // FIR filtering in the frequency domain via overlap add
     if (mode == 50) {
         olafilt.filter(outputData, outputData, outputNumSamples);
+    }
+    
+    if (mode == 98) {
+        echocancel.filter(outputData,outputData,outputNumSamples);
     }
     
     
