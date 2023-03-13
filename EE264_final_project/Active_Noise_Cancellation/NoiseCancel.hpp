@@ -13,6 +13,8 @@
 #include <iostream>
 #include <fstream>
 #include <Accelerate/Accelerate.h>
+#include "matrix.h"
+//#include </opt/homebrew/l,/ib/armadillo.h>
 
 
 //const int L32FirInterpFilterLen = 32;
@@ -29,16 +31,12 @@ class NoiseCancel {
     int16_t state[maxDataArraySize] = {0};
     int16_t tempData[maxDataArraySize] = {0};
     
-
-    
-    
 public:
     
     void setup(const int16_t *filterCoeff, int inFilterLen);
     
     void filter(int16_t *outputData,
                 const int16_t *inputData,
-                const int16_t *desiredSignal,
                 int inputNumSamples);
     
 };

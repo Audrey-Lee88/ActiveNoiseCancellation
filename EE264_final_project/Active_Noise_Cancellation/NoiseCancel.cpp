@@ -27,19 +27,63 @@ void NoiseCancel::setup(const int16_t *filterCoeff,
 
 void NoiseCancel::filter(int16_t *outputData,
                        const int16_t *inputData,
-                       const int16_t *desiredSignal,
                        int inputNumSamples){
-    int16_t tempData1[maxDataArraySize];
+    // uninterleave the data
+    float signal_plus_noise[inputNumSamples/2];
+    float noise_reference[inputNumSamples/2];
+    int n = inputNumSamples/2;
     
-    float correlationResult = (inputNumSamples);
-
-    vDSP_conv(inputData,
-              1,
-              inputData,
-              1, // The stride through the filter vector.
-              &correlationResult,
-              1,
-              inputNumSamples, maxDataArraySize);
+    for (int ax = 0; ax < inputNumSamples-2; ax += 2){
+        signal_plus_noise[ax] = inputData[ax];
+        noise_reference[ax+1] = inputData[ax+1];
+    }
+    
+    // setup for the gradient descent algorithm
+    int M = 25;
+    float w[M];
+    float wi[M];
+    Matrix R(25, 25, 0);
+    int k = 1;
+    float rr[M];
+    
+    float r[inputNumSamples-1];
+    vDSP_conv(r, 1, signal_plus_noise, 1, signal_plus_noise, 1, n, n);
+    
+    for (int i = 0; i < M; i++) {
+        rr[i] = r[n - i + 1];
+    }
+    
+    // turn the vector into toeplitz
+    // right half
+    for (int i = 0; i < M; i++) {
+        for (int j = 0; j < M; j++) {
+            R(i, j) = rr[j-i];
+        }
+        for (int j = M-1; j >= 0; j--) {
+            R(j, i) = rr[j-i];
+        }
+    }
+    
+    int errorCode;
+    double eigenvalue = 0.0;
+    int row = R.getRows();
+    double tolerance = 0.5;
+    
+    // Power Iteration to find an eigenvalue
+    tie(R, eigenvalue, errorCode) = R.powerIter(row, tolerance);
+    
+    float u = 1/eigenvalue;
+    
+    float P[M];
+    for (int i = 0; i < M; i++) {
+        P[i] = r[n - i + 1];
+    }
+    
+//    for (i = 0; i < 10; i++) {
+//        for (idx = 0; idx < M; idx++) {
+//            wi[idx] =
+//        }
+//    }
     
     /*
      D = s; //desired signal
