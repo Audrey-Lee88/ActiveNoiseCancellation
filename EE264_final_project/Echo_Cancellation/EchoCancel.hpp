@@ -20,6 +20,9 @@ class EchoCancel {
     static const int maxDataArraySize = 8192;
     static const int maxFftSize = 2048;
     FftModule fftModule = FftModule(maxFftSize);
+    static const int maxFilterLength = 2*maxDataArraySize+1;
+    
+    int filterLen = 0;
 
     // Temporary arrays
     float inputFloat[maxDataArraySize] = {0};
@@ -37,18 +40,25 @@ class EchoCancel {
     float imagFloat2[maxDataArraySize / 2] = {0};
     DSPSplitComplex splitCplxFloat2 = {realFloat2, imagFloat2};
     
-    float realFilterFloat[maxDataArraySize / 2] = {0};
-    float imagFilterFloat[maxDataArraySize / 2] = {0};
-    DSPSplitComplex splitCplxFilterFloat = {realFilterFloat, imagFilterFloat};
+    int16_t state[2*maxDataArraySize+1] = {0};
+    int16_t tempData[2*maxDataArraySize+1] = {0};
     
     
 public:
     
-    void setup(void);
+    void setup(const int16_t *filterCoeff, int inFilterLen);
 
-    void filter(int16_t *outputData, const int16_t *inputData,
-              int inputNumSamples);
+    void filter(int16_t *outputData,
+                const int16_t *inputData,
+                int inputNumSamples,
+                int upSampleFactor,
+                int downSampleFactor = 1);
     
 };
 
 #endif /* EchoCancel_hpp */
+
+
+//    float realFilterFloat[maxDataArraySize / 2] = {0};
+//    float imagFilterFloat[maxDataArraySize / 2] = {0};
+//    DSPSplitComplex splitCplxFilterFloat = {realFilterFloat, imagFilterFloat};

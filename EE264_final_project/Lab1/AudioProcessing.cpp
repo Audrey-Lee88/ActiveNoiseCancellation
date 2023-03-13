@@ -59,7 +59,6 @@ void AudioProcessing::setup(int outputSamplingRateParam,
     
     // ---> Your code here! - Lab 5
     olafilt.setup();
-    echocancel.setup();
     
 }
 
@@ -92,6 +91,8 @@ void AudioProcessing::processAudio(int16_t *outputData,
     for (int n = 0; n < outputNumSamples; n++) {
         outputData[n] = 0;
     }
+    
+    echocancel.setup(fileData,fileNumSamples);
     
     // File data processing
     if (fileNumSamples > 0) {
@@ -134,7 +135,17 @@ void AudioProcessing::processAudio(int16_t *outputData,
     }
     
     if (mode == 98) {
-        echocancel.filter(outputData,outputData,outputNumSamples);
+        echocancel.filter(&tempData[fileNumExtraSamples], fileData, fileNumSamples, fileUpSampleFactor, fileDownSampleFactor);
+
+        // Upsample and filter, store data at index fileNumExtraSamples
+        fileNumExtraSamples = fileNumExtraSamples + (fileNumSamplesNeeded * fileUpSampleFactor) / fileDownSampleFactor - outputNumSamples;
+
+        for (int i=0; i < outputNumSamples; i++) {
+            outputData[i] = tempData[i];
+        }
+        for (int j=0; j < fileNumExtraSamples; j++) {
+            fileExtraSamples[j] = tempData[j+outputNumSamples];
+        }
     }
     
     
