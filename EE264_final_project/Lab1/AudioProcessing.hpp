@@ -21,7 +21,8 @@
 #include "FirInterp.hpp"
 // ---> Your code here! - Lab 5
 
-
+// For project
+#include "NoiseCancel.hpp"
 
 class AudioProcessing {
     
@@ -50,6 +51,9 @@ class AudioProcessing {
     FreqDomainProcessing freqDomainProc;
     FirInterp fir1;
     OlaFftFilter olafilt;
+    
+    //For project
+    NoiseCancel noiseCancel;
     
     
 public:

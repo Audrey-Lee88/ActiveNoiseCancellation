@@ -27,7 +27,7 @@ private:
     vector<vector<double> > m_matrix;
 public:
     Matrix(unsigned, unsigned, double);
-    Matrix(const char *);
+//    Matrix(const char *);
     Matrix(const Matrix &);
     ~Matrix();
     

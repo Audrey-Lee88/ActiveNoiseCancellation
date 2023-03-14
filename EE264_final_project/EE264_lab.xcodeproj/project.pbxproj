@@ -8,11 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2F02858E29A047C2003A4149 /* tone_1000_3000.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2F02857F29A047C1003A4149 /* tone_1000_3000.caf */; };
-		2F02858F29A047C2003A4149 /* tone_500_48000.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2F02858029A047C1003A4149 /* tone_500_48000.caf */; };
 		2F02859029A047C2003A4149 /* tone_1000_16000.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2F02858129A047C1003A4149 /* tone_1000_16000.caf */; };
-		2F02859129A047C2003A4149 /* tone_1000_48000.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2F02858229A047C1003A4149 /* tone_1000_48000.caf */; };
 		2F02859229A047C2003A4149 /* tone_250_12000.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2F02858329A047C1003A4149 /* tone_250_12000.caf */; };
-		2F02859329A047C2003A4149 /* tone_250_48000.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2F02858429A047C1003A4149 /* tone_250_48000.caf */; };
 		2F02859429A047C2003A4149 /* tone_500_32000.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2F02858529A047C1003A4149 /* tone_500_32000.caf */; };
 		2F02859529A047C2003A4149 /* tone_250_3000.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2F02858629A047C1003A4149 /* tone_250_3000.caf */; };
 		2F02859629A047C2003A4149 /* tone_250_16000.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2F02858729A047C1003A4149 /* tone_250_16000.caf */; };
@@ -23,6 +20,11 @@
 		2F02859B29A047C2003A4149 /* tone_500_3000.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2F02858C29A047C2003A4149 /* tone_500_3000.caf */; };
 		2F02859C29A047C2003A4149 /* tone_250_32000.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2F02858D29A047C2003A4149 /* tone_250_32000.caf */; };
 		2F40050629BB0640007781BD /* NoiseCancel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2F40050429BB0640007781BD /* NoiseCancel.cpp */; };
+		2F40050829C02911007781BD /* active_noise_cancellation.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2F40050729C02911007781BD /* active_noise_cancellation.caf */; };
+		2F40050A29C02942007781BD /* tone_250_48000.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2F40050929C02942007781BD /* tone_250_48000.caf */; };
+		2F40050C29C02988007781BD /* tone_500_48000.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2F40050B29C02988007781BD /* tone_500_48000.caf */; };
+		2F40050E29C02997007781BD /* tone_1000_48000.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2F40050D29C02997007781BD /* tone_1000_48000.caf */; };
+		2F40051229C02B7B007781BD /* matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2F40051129C02B7B007781BD /* matrix.cpp */; };
 		2F48CBED29BAF0D90069D6C5 /* echo_file1.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2F48CBEC29BAF0D90069D6C5 /* echo_file1.caf */; };
 		2FD09A75299F50EC003CD6E0 /* FirInterp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2FD09A74299F50EC003CD6E0 /* FirInterp.cpp */; };
 		2FD09A7C299F6461003CD6E0 /* AudioProcessing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2FD09A7B299F6461003CD6E0 /* AudioProcessing.cpp */; };
@@ -74,11 +76,8 @@
 
 /* Begin PBXFileReference section */
 		2F02857F29A047C1003A4149 /* tone_1000_3000.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = tone_1000_3000.caf; sourceTree = "<group>"; };
-		2F02858029A047C1003A4149 /* tone_500_48000.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = tone_500_48000.caf; path = ../../../ee264_lab_2_ios/EE264_lab_app/AudioFiles/tone_500_48000.caf; sourceTree = "<group>"; };
 		2F02858129A047C1003A4149 /* tone_1000_16000.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = tone_1000_16000.caf; sourceTree = "<group>"; };
-		2F02858229A047C1003A4149 /* tone_1000_48000.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = tone_1000_48000.caf; path = ../../../ee264_lab_2_ios/EE264_lab_app/AudioFiles/tone_1000_48000.caf; sourceTree = "<group>"; };
 		2F02858329A047C1003A4149 /* tone_250_12000.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = tone_250_12000.caf; sourceTree = "<group>"; };
-		2F02858429A047C1003A4149 /* tone_250_48000.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = tone_250_48000.caf; path = ../../../ee264_lab_2_ios/EE264_lab_app/AudioFiles/tone_250_48000.caf; sourceTree = "<group>"; };
 		2F02858529A047C1003A4149 /* tone_500_32000.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = tone_500_32000.caf; sourceTree = "<group>"; };
 		2F02858629A047C1003A4149 /* tone_250_3000.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = tone_250_3000.caf; sourceTree = "<group>"; };
 		2F02858729A047C1003A4149 /* tone_250_16000.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = tone_250_16000.caf; sourceTree = "<group>"; };
@@ -90,6 +89,12 @@
 		2F02858D29A047C2003A4149 /* tone_250_32000.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = tone_250_32000.caf; sourceTree = "<group>"; };
 		2F40050429BB0640007781BD /* NoiseCancel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NoiseCancel.cpp; sourceTree = "<group>"; };
 		2F40050529BB0640007781BD /* NoiseCancel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = NoiseCancel.hpp; sourceTree = "<group>"; };
+		2F40050729C02911007781BD /* active_noise_cancellation.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = active_noise_cancellation.caf; sourceTree = "<group>"; };
+		2F40050929C02942007781BD /* tone_250_48000.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = tone_250_48000.caf; sourceTree = "<group>"; };
+		2F40050B29C02988007781BD /* tone_500_48000.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = tone_500_48000.caf; sourceTree = "<group>"; };
+		2F40050D29C02997007781BD /* tone_1000_48000.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = tone_1000_48000.caf; sourceTree = "<group>"; };
+		2F40051129C02B7B007781BD /* matrix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = matrix.cpp; sourceTree = "<group>"; };
+		2F40051329C02B8A007781BD /* matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = matrix.h; sourceTree = "<group>"; };
 		2F48CBEC29BAF0D90069D6C5 /* echo_file1.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = echo_file1.caf; sourceTree = "<group>"; };
 		2FD09A73299F50EC003CD6E0 /* FirInterp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FirInterp.hpp; sourceTree = "<group>"; };
 		2FD09A74299F50EC003CD6E0 /* FirInterp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FirInterp.cpp; sourceTree = "<group>"; };
@@ -155,6 +160,8 @@
 			isa = PBXGroup;
 			children = (
 				2F40050429BB0640007781BD /* NoiseCancel.cpp */,
+				2F40051329C02B8A007781BD /* matrix.h */,
+				2F40051129C02B7B007781BD /* matrix.cpp */,
 				2F40050529BB0640007781BD /* NoiseCancel.hpp */,
 			);
 			path = Active_Noise_Cancellation;
@@ -241,22 +248,23 @@
 		D4E4748729752A29009F205D /* AudioFiles */ = {
 			isa = PBXGroup;
 			children = (
+				2F40050929C02942007781BD /* tone_250_48000.caf */,
 				2F02858629A047C1003A4149 /* tone_250_3000.caf */,
 				2F02858329A047C1003A4149 /* tone_250_12000.caf */,
 				2F02858729A047C1003A4149 /* tone_250_16000.caf */,
 				2F02858D29A047C2003A4149 /* tone_250_32000.caf */,
 				2F48CBEC29BAF0D90069D6C5 /* echo_file1.caf */,
-				2F02858429A047C1003A4149 /* tone_250_48000.caf */,
 				2F02858C29A047C2003A4149 /* tone_500_3000.caf */,
 				2F02858A29A047C1003A4149 /* tone_500_12000.caf */,
+				2F40050B29C02988007781BD /* tone_500_48000.caf */,
 				2F02858B29A047C1003A4149 /* tone_500_16000.caf */,
 				2F02858529A047C1003A4149 /* tone_500_32000.caf */,
-				2F02858029A047C1003A4149 /* tone_500_48000.caf */,
+				2F40050D29C02997007781BD /* tone_1000_48000.caf */,
 				2F02857F29A047C1003A4149 /* tone_1000_3000.caf */,
 				2F02858829A047C1003A4149 /* tone_1000_12000.caf */,
 				2F02858129A047C1003A4149 /* tone_1000_16000.caf */,
+				2F40050729C02911007781BD /* active_noise_cancellation.caf */,
 				2F02858929A047C1003A4149 /* tone_1000_32000.caf */,
-				2F02858229A047C1003A4149 /* tone_1000_48000.caf */,
 			);
 			path = AudioFiles;
 			sourceTree = "<group>";
@@ -429,23 +437,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				2F02859629A047C2003A4149 /* tone_250_16000.caf in Resources */,
-				2F02859329A047C2003A4149 /* tone_250_48000.caf in Resources */,
 				2F02859C29A047C2003A4149 /* tone_250_32000.caf in Resources */,
-				2F02858F29A047C2003A4149 /* tone_500_48000.caf in Resources */,
 				2F02859229A047C2003A4149 /* tone_250_12000.caf in Resources */,
 				2F02859829A047C2003A4149 /* tone_1000_32000.caf in Resources */,
 				2F02859A29A047C2003A4149 /* tone_500_16000.caf in Resources */,
 				2F02858E29A047C2003A4149 /* tone_1000_3000.caf in Resources */,
 				2F02859929A047C2003A4149 /* tone_500_12000.caf in Resources */,
-				2F02859129A047C2003A4149 /* tone_1000_48000.caf in Resources */,
+				2F40050C29C02988007781BD /* tone_500_48000.caf in Resources */,
 				2F02859429A047C2003A4149 /* tone_500_32000.caf in Resources */,
 				2F02859B29A047C2003A4149 /* tone_500_3000.caf in Resources */,
 				2F02859729A047C2003A4149 /* tone_1000_12000.caf in Resources */,
+				2F40050829C02911007781BD /* active_noise_cancellation.caf in Resources */,
+				2F40050A29C02942007781BD /* tone_250_48000.caf in Resources */,
 				D4E47465297529AC009F205D /* Preview Assets.xcassets in Resources */,
 				2F02859529A047C2003A4149 /* tone_250_3000.caf in Resources */,
 				D4E47462297529AC009F205D /* Assets.xcassets in Resources */,
 				2F02859029A047C2003A4149 /* tone_1000_16000.caf in Resources */,
 				2F48CBED29BAF0D90069D6C5 /* echo_file1.caf in Resources */,
+				2F40050E29C02997007781BD /* tone_1000_48000.caf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -458,6 +467,7 @@
 			files = (
 				D4E47460297529AB009F205D /* ContentView.swift in Sources */,
 				D4E474D229760B0F009F205D /* MainView.swift in Sources */,
+				2F40051229C02B7B007781BD /* matrix.cpp in Sources */,
 				D4E474A5297606AD009F205D /* CAXException.swift in Sources */,
 				D4E4749529760649009F205D /* AudioController.swift in Sources */,
 				D4E4749C29760698009F205D /* StatsUtilities.swift in Sources */,

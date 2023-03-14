@@ -29,29 +29,30 @@ void NoiseCancel::filter(int16_t *outputData,
                        const int16_t *inputData,
                        int inputNumSamples){
     // uninterleave the data
-    float signal_plus_noise[inputNumSamples/2];
-    float noise_reference[inputNumSamples/2];
+    const int length = inputNumSamples/2;
+    float signal_plus_noise[length];
+    float noise_reference[length];
     int n = inputNumSamples/2;
     
-    for (int ax = 0; ax < inputNumSamples-2; ax += 2){
+    for (int ax = 0; ax < length; ax += 2){
         signal_plus_noise[ax] = inputData[ax];
         noise_reference[ax+1] = inputData[ax+1];
     }
     
+    
     // setup for the gradient descent algorithm
     int M = 25;
-    float w[M];
-    float wi[M];
+    
     Matrix R(25, 25, 0);
-    int k = 1;
     float rr[M];
     
-    float r[inputNumSamples-1];
+    float r[length-1];
     vDSP_conv(r, 1, signal_plus_noise, 1, signal_plus_noise, 1, n, n);
     
     for (int i = 0; i < M; i++) {
         rr[i] = r[n - i + 1];
     }
+    
     
     // turn the vector into toeplitz
     // right half
@@ -65,69 +66,97 @@ void NoiseCancel::filter(int16_t *outputData,
     }
     
     int errorCode;
-    double eigenvalue = 0.0;
+//    double eigenvalue = 0.0;
     int row = R.getRows();
     double tolerance = 0.5;
     
     // Power Iteration to find an eigenvalue
-    tie(R, eigenvalue, errorCode) = R.powerIter(row, tolerance);
+//    tie(R, eigenvalue, errorCode) = R.powerIter(row, tolerance);
+//    std::cout << eigenvalue;
     
-    float u = 1/eigenvalue;
+//    float u = 1/eigenvalue;
+    double eigenvalue = 1;
+    Matrix u(1,1,0);
+    u(0,0) = 1/eigenvalue;
     
-    float P[M];
+//    float P[M];
+    Matrix P(25, 1, 0);
     for (int i = 0; i < M; i++) {
-        P[i] = r[n - i + 1];
+        P(i,0) = r[n - i + 1];
     }
     
-//    for (i = 0; i < 10; i++) {
-//        for (idx = 0; idx < M; idx++) {
-//            wi[idx] =
-//        }
-//    }
+//    float w[M];
+//    float wi[M];
+    Matrix w(25, 1, 0);
+    Matrix wi(25, 1, 0);
+    Matrix inter(25,1,0);
     
-    /*
-     D = s; //desired signal
-     A = signal_plus_noise; // inputdata
-
-     n = numel(D); // desired signal len (same as len of input data)
-
-     M = 25;
-     w = zeros(M,1);
-     wi = zeros(M,1);
-     R = [];
-     k = 1;
-     r = xcorr(A)
-     rr = [];
-
-     for i = 1:1:M
-         rr(i) = r(n-1+1);
-     end
-
-     R = toeplitz(rr);
-     ei = max(eig(R));
-     u = 1/ei;
-     p = xcorr(D, A);
-
-     for i = 1:1:M
-         P(i) = p(n-i+1);
-     end
-
-     for i = 1:10
-         wi = w + u*(P'-R*w);
-         w = wi;
-     end
-
-     % find the estimate
-     Est = zeros(n, 1)
-     for i = M:n
-         j = A(i:-1:i-M+1);
-         Est(i) = (wi)'*(j)';
-     end
-
-     % error signal
-     Err = Est' - D;
-     
-     */
+    Matrix inter2(25,1,0);
+    
+    // initialize w to be empty zeros always at start of loops
+    for (int m = 0; m < M; m++) {
+        w(m, 0) = 0;
+    }
+    
+    for (int i = 0; i<25; i++) {
+        std::cout << P(i,0);
+    }
+    
+    
+    // update wi based on w, then update w, and finally get wi after loops
+    for (int i = 0; i < 10; i++) {
+        inter = R * w;
+        inter2 = P - inter;
+        wi = w + inter2;
+//        for (int idx = 0; idx < M; idx++) {
+//            inter = R * w;
+//
+//            for (int m = 0; m < M; m++) {
+//                wi(m,0) = w(m,0) + (P(m,0) - inter(m,0))* u(0,0);
+//            }
+            for (int m = 0; m < M; m++) {
+                w(m, 0) = wi(m, 0);
+            }
+//        }
+    }
+    
+    // keep wi and move on
+    //
+    Matrix est(length,1,0);
+    Matrix inter_a(1,25,0);
+    
+    
+    // initialize est to be empty zeros always at start of loops
+    for (int m = 0; m < length; m++) {
+        est(m, 0) = 0;
+    }
+    
+    int access_index = 0;
+    for (int i = 0; i < length; i++) {
+//        j = A(i:-1:i-M+1);
+        // i - M to i backwards
+        for (int a = length - M - i; a < -i; a--) {
+            if (a < 0) {
+                access_index = length - (a-1);
+            }
+            else {
+                access_index = a;
+            }
+            inter_a(0, access_index) = signal_plus_noise[access_index];
+//            est(i,0) += inter_a(0,a) * wi(a,0);
+        }
+        
+        for (int j=0; j < M; j++) {
+            est(i,0) += inter_a(0,j) * wi(j,0);
+        }
+    }
+    
+    // convert matrix est to outputdata (arr)
+    for (int i = 0; i < length; i++) {
+        outputData[i] = est(i,0);
+    }
+    
+//    */
     
     
     

@@ -24,4 +24,4 @@ void EchoCancel::filter(int16_t *outputData, const int16_t *inputData, int input
 
     }
     
-}
+
