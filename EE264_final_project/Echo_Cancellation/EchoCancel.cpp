@@ -17,7 +17,7 @@ void EchoCancel::setup(){
     
     std::cout << "EchoCancel::setup\n";
     echo_filt[0] = 32000; // 32767
-    echo_filt[11039] = 16000; // 16384
+    echo_filt[filterLen-1] = 16000; // 16384
     
     for (int i = 0; i < filterLen; i++){
         state[i] = 0; // clear filter state array
@@ -34,7 +34,7 @@ void EchoCancel::filter(int16_t *outputData,
     //std::cout << "BLOCK" << "\n";
     for (int i = 0; i < inputNumSamples; i++){
         int32_t acc = 0;
-        acc = echo_filt[0]*inputData[i] - echo_filt[11039]*state[filterLen-1-i];
+        acc = echo_filt[0]*inputData[i] - echo_filt[filterLen-1]*state[filterLen-1-i];
         //std::cout << acc;
         //std::cout << "Acc \n";
         outputData[i] = acc >> 15; // >> 15

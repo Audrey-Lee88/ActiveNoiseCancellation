@@ -135,7 +135,6 @@ void AudioProcessing::processAudio(int16_t *outputData,
     
     if (mode == 98) {
         echocancel.filter(outputData, fileData, fileNumSamples);
-
     }
     
     
