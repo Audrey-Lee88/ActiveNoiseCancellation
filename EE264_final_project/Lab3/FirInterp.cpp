@@ -25,7 +25,7 @@ void FirInterp::setup(const int16_t *filterCoeff,
         state[i] = 0; // clear filter state array
     }
 }
-
+ 
 void FirInterp::filter(int16_t *outputData,
                        const int16_t *inputData,
                        int inputNumSamples,

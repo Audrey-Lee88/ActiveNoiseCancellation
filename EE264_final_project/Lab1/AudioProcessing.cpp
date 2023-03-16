@@ -59,6 +59,7 @@ void AudioProcessing::setup(int outputSamplingRateParam,
     
     // ---> Your code here! - Lab 5
     olafilt.setup();
+    echocancel.setup();
     
 }
 
@@ -92,8 +93,6 @@ void AudioProcessing::processAudio(int16_t *outputData,
         outputData[n] = 0;
     }
     
-    echocancel.setup(fileData,fileNumSamples);
-    
     // File data processing
     if (fileNumSamples > 0) {
         // Your code here! - Lab 1.1
@@ -102,18 +101,18 @@ void AudioProcessing::processAudio(int16_t *outputData,
             outputData[n] = fileData[n];
         }
                 
-        // ---> Your code here! - Lab 3.1
-        fir1.filter(&tempData[fileNumExtraSamples], fileData, fileNumSamples, fileUpSampleFactor, fileDownSampleFactor);
-
-        // Upsample and filter, store data at index fileNumExtraSamples
-        fileNumExtraSamples = fileNumExtraSamples + (fileNumSamplesNeeded * fileUpSampleFactor) / fileDownSampleFactor - outputNumSamples;
-
-        for (int i=0; i < outputNumSamples; i++) {
-            outputData[i] = tempData[i];
-        }
-        for (int j=0; j < fileNumExtraSamples; j++) {
-            fileExtraSamples[j] = tempData[j+outputNumSamples];
-        }
+//        // ---> Your code here! - Lab 3.1
+//        fir1.filter(&tempData[fileNumExtraSamples], fileData, fileNumSamples, fileUpSampleFactor, fileDownSampleFactor);
+//
+//        // Upsample and filter, store data at index fileNumExtraSamples
+//        fileNumExtraSamples = fileNumExtraSamples + (fileNumSamplesNeeded * fileUpSampleFactor) / fileDownSampleFactor - outputNumSamples;
+//
+//        for (int i=0; i < outputNumSamples; i++) {
+//            outputData[i] = tempData[i];
+//        }
+//        for (int j=0; j < fileNumExtraSamples; j++) {
+//            fileExtraSamples[j] = tempData[j+outputNumSamples];
+//        }
 
     }
     
@@ -131,21 +130,12 @@ void AudioProcessing::processAudio(int16_t *outputData,
     // ---> Your code here! - Lab 5
     // FIR filtering in the frequency domain via overlap add
     if (mode == 50) {
-        olafilt.filter(outputData, outputData, outputNumSamples);
+        olafilt.filter(outputData, fileData, outputNumSamples);
     }
     
     if (mode == 98) {
-        echocancel.filter(&tempData[fileNumExtraSamples], fileData, fileNumSamples, fileUpSampleFactor, fileDownSampleFactor);
+        echocancel.filter(outputData, fileData, fileNumSamples);
 
-        // Upsample and filter, store data at index fileNumExtraSamples
-        fileNumExtraSamples = fileNumExtraSamples + (fileNumSamplesNeeded * fileUpSampleFactor) / fileDownSampleFactor - outputNumSamples;
-
-        for (int i=0; i < outputNumSamples; i++) {
-            outputData[i] = tempData[i];
-        }
-        for (int j=0; j < fileNumExtraSamples; j++) {
-            fileExtraSamples[j] = tempData[j+outputNumSamples];
-        }
     }
     
     

@@ -38,6 +38,7 @@ class AudioProcessing {
     // Temporary array to store rate converted audio file data
     static const int maxDataArraySize = 8192;
     int16_t tempData[maxDataArraySize];
+    int16_t tempData1[maxDataArraySize];
     
     // Number of samples to read fr om the audio file. See fileNumSamplesNeededFor().
     int fileNumSamplesNeeded = 0;
