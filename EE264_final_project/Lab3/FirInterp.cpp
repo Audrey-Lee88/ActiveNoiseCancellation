@@ -52,7 +52,7 @@ void FirInterp::filter(int16_t *outputData,
             acc += state[k-(n+1)] * coeff[k];
         }
         tempData1[n] = acc >> 15;
-        
+        // LMS coefficient adaptation
     }
     for (int n = filterLen - 1; n < N; n++){
         int32_t acc = 0;
@@ -60,6 +60,7 @@ void FirInterp::filter(int16_t *outputData,
             acc += tempData[n - k] * coeff[k];
         }
         tempData1[n] = acc >> 15;
+        // LMS coefficient adaptation
     }
     
     int n = 0;
