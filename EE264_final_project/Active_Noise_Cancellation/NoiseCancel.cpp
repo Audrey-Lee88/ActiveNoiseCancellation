@@ -24,153 +24,304 @@ void NoiseCancel::setup(const int16_t *filterCoeff,
         state[i] = 0; // clear filter state array
     }
 }
-
+// Using Lab 3; FIR method
 void NoiseCancel::filter(int16_t *outputData,
-                       const int16_t *inputData,
-                         int inputNumSamples){
+                         const int16_t *inputData,
+                         int inputNumSamples,
+                         int upSampleFactor,
+                         int downSampleFactor){
+    int var_int = (int)var;
+    int mu_int = (int)mu;
+
     
-    // convert from int16_t to float
-    // Convert input integer array to float
-    vDSP_vflt16(inputData, 1, tempInput_Float, 1, inputNumSamples);
-    
-    const float quant = 32768;
-    const float quant2 = 20000;
+//    std::cout << mu_int << "mu int val | " << mu << "mu ---";
+
+
+    int16_t signal_plus_noise[inputNumSamples/2];
+    int16_t noise_reference[inputNumSamples/2];
+
+    // Un-interleave the input data
+    for (int i = 0; i < inputNumSamples/2; i++) {
+        signal_plus_noise[i] = inputData[2*i];
+    }
+    for (int i = 0; i < inputNumSamples/2; i++) {
+        noise_reference[i] = inputData[2*i+1];
+    }
+
+
+        int16_t temp_r[L+1];
+
+        int16_t mult_mu_e_r = 0;
+
+        int16_t y[inputNumSamples/2];
+        int16_t e[inputNumSamples/2];
+
+      int16_t tempData1[maxDataArraySize];
+
+      int N = inputNumSamples*upSampleFactor;
+      //if (inputNumSamples*upSampleFactor <= maxDataArraySize){
+      for(int n = 0; n < inputNumSamples; n++) {
+          tempData[n*upSampleFactor] = signal_plus_noise[n];
+          for(int k = 1; k < upSampleFactor; k++){
+              tempData[n*upSampleFactor+k] = 0;
+          }
+      }
+
+      // for 0 < n < K-1
+      for (int n = 0; n < filterLen - 1; n++){
+          int32_t acc = 0;
+          // added temp_r (noise ref) to here and below for loops
+          for (int k = 0; k < n + 1; k++){
+              temp_r[k] = noise_reference[n - k];
+              acc += tempData[n - k] * coeff[k];
+          }
+          for (int k = n + 1; k < filterLen; k++){
+              temp_r[k] = noise_reference[k-(n+1)];
+              acc += state[k-(n+1)] * coeff[k];
+          }
+          // prev FIR
+//          tempData1[n] = acc >> 15;
+          
+          
+          // LMS coefficient adaptation
+          int y = acc >> 15;
+
+          // w = coeff; y = acc (tempData1 is bitshifted y); tempData = sig_plus_noise
+          // OR, do we want to leave y as is and then bitshift e?????
+          //find e
+          e[n] = tempData[n] - y;
+
+          // update w
+          mult_mu_e_r = 2*mu*e[n];
+          mult_mu_e_r = (int)mult_mu_e_r;
+          for (int i = 0; i < L+1; i++) {
+              coeff[i] = coeff[i] + mult_mu_e_r*temp_r[i];
+          }
+
+      }
+      for (int n = filterLen - 1; n < N; n++){
+          int32_t acc = 0;
+          for (int k =0; k < filterLen; k++){
+              temp_r[k] = noise_reference[n - k];
+              acc += tempData[n - k] * coeff[k];
+          }
+//          tempData1[n] = acc >> 15;
+          // LMS coefficient adaptation
+          int y = acc >> 15;
+          e[n] = tempData[n] - y;
+
+          // update w
+          mult_mu_e_r = 2*mu_int*e[n];
+          for (int i = 0; i < L+1; i++) {
+              coeff[i] = coeff[i] + mult_mu_e_r*temp_r[i];
+          }
+      }
+
+      int n = 0;
+      while(downSampleFactor * n < inputNumSamples * upSampleFactor){
+//          outputData[n] = tempData1[downSampleFactor*n]; //what it once was in FIR
+          outputData[n] = e[downSampleFactor*n];
+          n++;
+      }
+
+
+      for (int i = 0; i < filterLen - 1; i++){
+          state[i] = tempData[inputNumSamples * upSampleFactor - 1 - i];
+      }
+  }
+
+
+
+
+
+
+//// ORIGINAL WAY of trying this from MATLAB implementation
+//::filter(int16_t *outputData,
+//                         const int16_t *inputData,
+//                           int inputNumSamples){
+////      int var_int = (int)var;
+////      int mu_int = (int)mu;
 //
-    vDSP_vsdiv(tempInput_Float, 1, &quant, inputFloat, 1, inputNumSamples);
-    
-    
-    // uninterleave the data
-    const int length = inputNumSamples/2;
-//    int16_t signal_plus_noise[length];
-//    int16_t noise_reference[length];
-//    int counter = 0;
-//    for (int ax = 0; ax < inputNumSamples; ax += 2){
-////        std::cout << ax << "\n";
-//        signal_plus_noise[counter] =  inputData[ax];
-//        noise_reference[counter] =  inputData[ax+1];
-//        counter++;
-//    }
-    //std::cout << "----- NEW BLOCK HERE ----- \n";
-    float signal_plus_noise[length];
-    float noise_reference[length];
-    int counter = 0;
-    for (int ax = 0; ax < inputNumSamples; ax += 2){
-//        std::cout << ax << "\n";
-        signal_plus_noise[counter] =  inputFloat[ax];
-        noise_reference[counter] =  inputFloat[ax+1];
-        counter++;
-    }
-    
-    
-    float temp_r[L+1];
-    
-    float mult_mu_e_r = 0.0;
-    
-    float y[inputNumSamples/2];
-    float e[inputNumSamples/2];
-    float w[L+1];
-    
-    //    initialize all arrays to 0
-    for (int i = 0; i < L+1; i++) {
-        w[i] = 0;
-    }
-    
-    for (int i = 0; i < inputNumSamples/2; i++) {
-        y[i] = 0;
-    }
-    
-    for (int i = 0; i < inputNumSamples/2; i++) {
-        e[i] = 0;
-    }
-    
-    for (int k = L; k < inputNumSamples/2; k++) {
-        int count = 0;
-        
-        // generating r window - double checked - correct :)
-        for (int j=k; j >= k-L; j--){
-            temp_r[count] = noise_reference[j];
-            count++;
-        }
-                
-        
-        // finding y_k
-        for (int i=0; i < L+1; i++) {
-            y[k] += w[i] * temp_r[i];
-        }
-        
-        //find e
-        e[k] = signal_plus_noise[k] - y[k];
-        
-        // update w
-        mult_mu_e_r = 2*mu*e[k];
-        for (int i = 0; i < L+1; i++) {
-            w[i] = w[i] + mult_mu_e_r*temp_r[i];
-        }
-        
-    }
-    
-//    for (int i = 0; i < inputNumSamples/2; i ++) {
-//        std::cout << e[i] << " e| " << i << " i| ";
-//    }
-    
-//    for (int i = 0; i < inputNumSamples/2; i++) {
-//        std::cout << e[i] << "e | ";
-//    }
-    
-//    for (int i = 0; i < inputNumSamples/2; i++) {
-//        tempData_Float[i] = signal_plus_noise[i]*32768;
-//    }
-    vDSP_vsmul(e, 1, &quant, tempData_Float, 1, inputNumSamples/2);
-    std::ofstream ofile;
-    
-    ofile.open("/Users/eelabsuser/Documents/Audrey/ActiveNoiseCancellation/test_data.txt", std::ios::app);
-    
-    vDSP_vfix16(tempData_Float, 1, tempData_Int, 1, inputNumSamples/2);
-    
-    for (int i = 0; i < inputNumSamples/2; i++) {
-        ofile << e[i] << std::endl;
-    }
-    ofile.close();
-    
-    
-    
-//    int c = 0;
-//    for (int i = 0; i< inputNumSamples; i+=2) {
-//        for (int j = 0; j < 2; j++) {
-//            outputData[i+j] = signal_plus_noise[c];
-//        }
-////        std::cout << inputData[c] << setprecision(5) << " | ";
-//        c++;
-//    }
-        
-    int c = 0;
-    for (int i = 0; i< inputNumSamples; i+=2) {
-        for (int j = 0; j < 2; j++) {
-            outputData[i+j] = tempData_Int[c];
-        }
-//        std::cout << inputData[c] << setprecision(5) << " | ";
-        c++;
-    }
-    
-//    for (int i = 0; i < inputNumSamples; i++) {
-//        tempData_Float[i] = inputFloat[i]*32768;
-//    }
-    
-//    vDSP_vfix16(tempData_Float, 1, outputData, 1, inputNumSamples);
-//    int c = 0;
-//    for (int i = 0; i< inputNumSamples; i+=2) {
-////        std::cout << signal_plus_noise[i] << " | ";
-//        outputData[i] = signal_plus_noise[c];
-//        outputData[i+1] = noise_reference[c];
-//        c++;
-//    }
-    
-//    for (int i = 0; i< inputNumSamples/2; i++) {
-////        std::cout << signal_plus_noise[i] << " | ";
-//        outputData[i] = signal_plus_noise[i];
-//    }
-    
-}
+//      // convert from int16_t to float
+//      // Convert input integer array to float
+//      vDSP_vflt16(inputData, 1, tempInput_Float, 1, inputNumSamples);
+//
+//      const float quant = 32768;
+//  //    const float quant2 = 32768;
+//  //
+//      vDSP_vsdiv(tempInput_Float, 1, &quant, inputFloat, 1, inputNumSamples);
+//
+//
+//      // uninterleave the data
+//      const int length = inputNumSamples/2;
+//  //    int16_t signal_plus_noise[length];
+//  //    int16_t noise_reference[length];
+//  //    int counter = 0;
+//  //    for (int ax = 0; ax < inputNumSamples; ax += 2){
+//  ////        std::cout << ax << "\n";
+//  //        signal_plus_noise[counter] =  inputData[ax];
+//  //        noise_reference[counter] =  inputData[ax+1];
+//  //        counter++;
+//  //    }
+//      //std::cout << "----- NEW BLOCK HERE ----- \n";
+//      float signal_plus_noise[length];
+//      float noise_reference[length];
+//  //    int counter = 0;
+//  //    for (int ax = 0; ax < inputNumSamples; ax += 2){
+//  ////        std::cout << ax << "\n";
+//  //        signal_plus_noise[counter] =  inputFloat[ax];
+//  //        noise_reference[counter] =  inputFloat[ax+1];
+//  //        counter++;
+//  //    }
+//      for (int i = 0; i < inputNumSamples/2; i++) {
+//          signal_plus_noise[i] = inputFloat[2*i];
+//  //        counter += 1;
+//      }
+//  //    int counter2 = 1;
+//      for (int i = 0; i < inputNumSamples/2; i++) {
+//          noise_reference[i] = inputFloat[2*i+1];
+//  //        counter2 += 1;
+//      }
+//
+//
+//      float temp_r[L+1];
+//
+//      float mult_mu_e_r = 0.0;
+//
+////      int16_t y[length];
+////      int16_t e[length];
+//
+//      //    initialize all arrays to 0
+//
+//
+//      for (int i = 0; i < inputNumSamples/2; i++) {
+//          y[i] = 0;
+//      }
+////
+//      for (int i = 0; i < inputNumSamples/2; i++) {
+//          e[i] = 0;
+//      }
+//
+//      for (int k = L; k < inputNumSamples/2; k++) {
+//          int count = 0;
+//
+//          // generating r window - double checked - correct :)
+//          for (int j=k; j >= k-L; j--){
+//              temp_r[count] = noise_reference[j];
+//              count++;
+//          }
+//
+//
+//          // finding y_k
+//          for (int i=0; i < L+1; i++) {
+//              y[k] += w[i] * temp_r[i];
+//          }
+//
+//          //find e
+//          e[k] = signal_plus_noise[k] - y[k];
+//
+//          // update w
+//          mult_mu_e_r = 2*mu*e[k];
+//          for (int i = 0; i < L+1; i++) {
+//              w[i] = w[i] + mult_mu_e_r*temp_r[i];
+//          }
+//
+//      }
+//
+//  //    for (int i = 0; i < inputNumSamples/2; i ++) {
+//  //        std::cout << e[i] << " e| " << i << " i| ";
+//  //    }
+//
+//  //    for (int i = 0; i < inputNumSamples/2; i++) {
+//  //        std::cout << e[i] << "e | ";
+//  //    }
+//
+//  //    for (int i = 0; i < inputNumSamples/2; i++) {
+//  //        tempData_Float[i] = signal_plus_noise[i]*32768;
+//  //    }
+//  //
+//
+//
+//  //    ofile.open("/Users/eelabsuser/Documents/Audrey/ActiveNoiseCancellation/test_data.txt", std::ios::app);
+//  //
+//  //    for (int i = 0; i < inputNumSamples/2; i++) {
+//  //        ofile << signal_plus_noise[i] << std::endl;
+//  //    }
+//  //    ofile.close();
+//
+//      vDSP_vsmul(e, 1, &quant, tempData_Float, 1, inputNumSamples/2);
+//  //    std::ofstream ofile;
+//  //
+//  //    ofile.open("/tmp/test_data.txt", std::ios::app);
+//  //
+//      vDSP_vfix16(tempData_Float, 1, tempData_Int, 1, inputNumSamples/2);
+//
+//  //    for (int i = 0; i < inputNumSamples/2; i++) {
+//  //        ofile << e[i] << std::endl;
+//  //    }
+//  //    ofile.close();
+//
+//  //
+//  //
+//  ////    int c = 0;
+//  ////    for (int i = 0; i< inputNumSamples; i+=2) {
+//  ////        for (int j = 0; j < 2; j++) {
+//  ////            outputData[i+j] = signal_plus_noise[c];
+//  ////        }
+//  //////        std::cout << inputData[c] << setprecision(5) << " | ";
+//  ////        c++;
+//  ////    }
+//  //
+//      int c = 0;
+//      for (int i = 0; i< inputNumSamples/2; i+=2) {
+//          for (int j = 0; j < 2; j++) {
+//              if (i+j < 32){
+//                  outputData[i+j] = tempData_Int[33];
+//              }
+//              else {
+//                  outputData[i+j] = tempData_Int[c];
+//              }
+//
+//
+//          }
+//  //        std::cout << inputData[c] << setprecision(5) << " | ";
+//          c++;
+//      }
+//
+//  //    for (int i = 0; i < inputNumSamples; i++) {
+//  //        tempData_Float[i] = inputFloat[i]*32768;
+//  //    }
+//
+//  //    vDSP_vfix16(tempData_Float, 1, outputData, 1, inputNumSamples);
+//  //    int c = 0;
+//  //    for (int i = 0; i< inputNumSamples; i+=2) {
+//  ////        std::cout << signal_plus_noise[i] << " | ";
+//  //        outputData[i] = signal_plus_noise[c];
+//  //        outputData[i+1] = noise_reference[c];
+//  //        c++;
+//  //    }
+//
+//  //    for (int i = 0; i< inputNumSamples/2; i++) {
+//  ////        std::cout << signal_plus_noise[i] << " | ";
+//  //        outputData[i] = signal_plus_noise[i];
+//  //    }
+//
+//  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+////// Other method tried before
 //    // uninterleave the data
 //    const int length = inputNumSamples/2;
 //    float signal_plus_noise[length];

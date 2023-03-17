@@ -25,10 +25,9 @@ class NoiseCancel {
     static const int maxFilterLength = 512;
     static const int maxDataArraySize = 8192;
     
-    int filterLen = 0;
+    
     int samp_len = 256;
     
-    int16_t coeff[maxFilterLength] = {0};
     int16_t state[maxDataArraySize] = {0};
     int16_t tempData[maxDataArraySize] = {0};
     float inputFloat[maxDataArraySize] = {0};
@@ -36,19 +35,42 @@ class NoiseCancel {
     float tempInput_Float[maxDataArraySize] = {0};
     int16_t tempData_Int[maxDataArraySize] = {0};
     
-    float var = 2e-5;
-    int L = 25;
+    //prev implementation
+//    int16_t coeff[maxFilterLength] = {0};
+//    float var = 2e-5;
+//    static const int L = 32;
+//    const int quant = 32768;
+//
+//    float mu = 0.001/((L+1)*var);
+//    float w[L+1] = {0};
+//    float e[256] = {0};
+//    float y[256] = {0};
     
-    float mu = 0.001/((L+1)*var);
+    //new one
+    float var = pow(2,15)*2e-5;
+    int var_int;
+    static const int L = 32;
+    int filterLen = 32;
+    const int quant = 32768;
 
+    float mu = pow(2,15)*0.001/((L+1)*var);
+    int16_t coeff[L+1] = {0};
     
 public:
     
     void setup(const int16_t *filterCoeff, int samp_len);
     
+    // MATLAB impl filter
+//    void filter(int16_t *outputData,
+//                const int16_t *inputData,
+//                int inputNumSamples);
+    
+    // FIR filter impl
     void filter(int16_t *outputData,
                 const int16_t *inputData,
-                int inputNumSamples);
+                int inputNumSamples,
+                int upSampleFactor,
+                int downSampleFactor);
     
 };
 

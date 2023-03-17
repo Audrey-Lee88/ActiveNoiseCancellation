@@ -157,7 +157,12 @@ void AudioProcessing::processAudio(int16_t *outputData,
 //                fileExtraSamples[j] = tempData[j+outputNumSamples];
 //            }
         
-            noiseCancel.filter(outputData, fileData, fileNumSamples);
+        // MATLAB impl
+//            noiseCancel.filter(outputData, fileData, fileNumSamples);
+        
+        
+        //FIR Impl
+        noiseCancel.filter(outputData,fileData,fileNumSamples,fileUpSampleFactor,fileDownSampleFactor);
 
     }
     

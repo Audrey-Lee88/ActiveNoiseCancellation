@@ -28,6 +28,8 @@
 		2F40051929C309CA007781BD /* anc_noise_cheby_try2.wav in Resources */ = {isa = PBXBuildFile; fileRef = 2F40051829C309CA007781BD /* anc_noise_cheby_try2.wav */; };
 		2F40051C29C30E0A007781BD /* anc_noise_cheby_try2.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2F40051A29C30E0A007781BD /* anc_noise_cheby_try2.caf */; };
 		2F40051D29C30E0A007781BD /* anc_noise_cheby_try3.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2F40051B29C30E0A007781BD /* anc_noise_cheby_try3.caf */; };
+		2F40051F29C43B1B007781BD /* anc_noise_cheby_try4.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2F40051E29C43B1B007781BD /* anc_noise_cheby_try4.caf */; };
+		2F40052129C45F35007781BD /* try6clip.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2F40052029C45F35007781BD /* try6clip.caf */; };
 		2F48CBED29BAF0D90069D6C5 /* echo_file1.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2F48CBEC29BAF0D90069D6C5 /* echo_file1.caf */; };
 		2FD09A75299F50EC003CD6E0 /* FirInterp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2FD09A74299F50EC003CD6E0 /* FirInterp.cpp */; };
 		2FD09A7C299F6461003CD6E0 /* AudioProcessing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2FD09A7B299F6461003CD6E0 /* AudioProcessing.cpp */; };
@@ -101,6 +103,8 @@
 		2F40051829C309CA007781BD /* anc_noise_cheby_try2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = anc_noise_cheby_try2.wav; sourceTree = "<group>"; };
 		2F40051A29C30E0A007781BD /* anc_noise_cheby_try2.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = anc_noise_cheby_try2.caf; sourceTree = SOURCE_ROOT; };
 		2F40051B29C30E0A007781BD /* anc_noise_cheby_try3.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = anc_noise_cheby_try3.caf; sourceTree = SOURCE_ROOT; };
+		2F40051E29C43B1B007781BD /* anc_noise_cheby_try4.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = anc_noise_cheby_try4.caf; sourceTree = "<group>"; };
+		2F40052029C45F35007781BD /* try6clip.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = try6clip.caf; sourceTree = "<group>"; };
 		2F48CBEC29BAF0D90069D6C5 /* echo_file1.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = echo_file1.caf; sourceTree = "<group>"; };
 		2FD09A73299F50EC003CD6E0 /* FirInterp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FirInterp.hpp; sourceTree = "<group>"; };
 		2FD09A74299F50EC003CD6E0 /* FirInterp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FirInterp.cpp; sourceTree = "<group>"; };
@@ -258,7 +262,9 @@
 				2F40050929C02942007781BD /* tone_250_48000.caf */,
 				2F02858629A047C1003A4149 /* tone_250_3000.caf */,
 				2F02858329A047C1003A4149 /* tone_250_12000.caf */,
+				2F40052029C45F35007781BD /* try6clip.caf */,
 				2F40051A29C30E0A007781BD /* anc_noise_cheby_try2.caf */,
+				2F40051E29C43B1B007781BD /* anc_noise_cheby_try4.caf */,
 				2F40051B29C30E0A007781BD /* anc_noise_cheby_try3.caf */,
 				2F02858729A047C1003A4149 /* tone_250_16000.caf */,
 				2F02858D29A047C2003A4149 /* tone_250_32000.caf */,
@@ -449,10 +455,12 @@
 				2F40051C29C30E0A007781BD /* anc_noise_cheby_try2.caf in Resources */,
 				2F02859629A047C2003A4149 /* tone_250_16000.caf in Resources */,
 				2F40051929C309CA007781BD /* anc_noise_cheby_try2.wav in Resources */,
+				2F40051F29C43B1B007781BD /* anc_noise_cheby_try4.caf in Resources */,
 				2F02859C29A047C2003A4149 /* tone_250_32000.caf in Resources */,
 				2F02859229A047C2003A4149 /* tone_250_12000.caf in Resources */,
 				2F02859829A047C2003A4149 /* tone_1000_32000.caf in Resources */,
 				2F02859A29A047C2003A4149 /* tone_500_16000.caf in Resources */,
+				2F40052129C45F35007781BD /* try6clip.caf in Resources */,
 				2F02858E29A047C2003A4149 /* tone_1000_3000.caf in Resources */,
 				2F02859929A047C2003A4149 /* tone_500_12000.caf in Resources */,
 				2F40050C29C02988007781BD /* tone_500_48000.caf in Resources */,

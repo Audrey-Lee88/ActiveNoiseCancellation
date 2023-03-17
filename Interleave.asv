@@ -5,7 +5,7 @@ function C = Interleave(A,B)
 %     C = [A;B];
 %     C = C(:)';
 
-for i=1:2:length(A)
-    C(i) = A(i);
-    C(i+1) = B(i);
+for i=1:length(A)
+    C(2*i) = A(i);
+    C(2*i+1) = B(i);
 end
