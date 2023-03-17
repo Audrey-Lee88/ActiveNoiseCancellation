@@ -37,9 +37,11 @@ class NoiseCancel {
     int16_t tempData_Int[maxDataArraySize] = {0};
     
     float var = 2e-5;
-    int L = 25;
+    static const int L = 25;
     
     float mu = 0.001/((L+1)*var);
+    
+    float w[L] = {0};
 
     
 public:

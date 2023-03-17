@@ -34,7 +34,7 @@ void NoiseCancel::filter(int16_t *outputData,
     vDSP_vflt16(inputData, 1, tempInput_Float, 1, inputNumSamples);
     
     const float quant = 32768;
-    const float quant2 = 20000;
+//    const float quant2 = 20000;
 //
     vDSP_vsdiv(tempInput_Float, 1, &quant, inputFloat, 1, inputNumSamples);
     
@@ -68,12 +68,6 @@ void NoiseCancel::filter(int16_t *outputData,
     
     float y[inputNumSamples/2];
     float e[inputNumSamples/2];
-    float w[L+1];
-    
-    //    initialize all arrays to 0
-    for (int i = 0; i < L+1; i++) {
-        w[i] = 0;
-    }
     
     for (int i = 0; i < inputNumSamples/2; i++) {
         y[i] = 0;
@@ -120,10 +114,10 @@ void NoiseCancel::filter(int16_t *outputData,
 //    for (int i = 0; i < inputNumSamples/2; i++) {
 //        tempData_Float[i] = signal_plus_noise[i]*32768;
 //    }
-    vDSP_vsmul(e, 1, &quant, tempData_Float, 1, inputNumSamples/2);
+    vDSP_vsmul(signal_plus_noise, 1, &quant, tempData_Float, 1, inputNumSamples/2);
     std::ofstream ofile;
     
-    ofile.open("/Users/eelabsuser/Documents/Audrey/ActiveNoiseCancellation/test_data.txt", std::ios::app);
+    ofile.open("/tmp/test_data.txt", std::ios::app);
     
     vDSP_vfix16(tempData_Float, 1, tempData_Int, 1, inputNumSamples/2);
     
@@ -145,6 +139,8 @@ void NoiseCancel::filter(int16_t *outputData,
         
     int c = 0;
     for (int i = 0; i< inputNumSamples; i+=2) {
+//        outputData[i+0] = tempData_Int[c];
+//        outputData[i+1] = 0;
         for (int j = 0; j < 2; j++) {
             outputData[i+j] = tempData_Int[c];
         }
