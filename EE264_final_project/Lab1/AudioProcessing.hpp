@@ -41,8 +41,8 @@ class AudioProcessing {
     static const int maxDataArraySize = 8192;
     int16_t tempData[maxDataArraySize];
     
-    int16_t tempData2[666666];
-    int16_t tempData3[666666];
+//    int16_t tempData2[666666];
+//    int16_t tempData3[666666];
     
     // Number of samples to read fr om the audio file. See fileNumSamplesNeededFor().
     int fileNumSamplesNeeded = 0;

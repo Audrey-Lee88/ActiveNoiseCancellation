@@ -60,6 +60,9 @@ void AudioProcessing::setup(int outputSamplingRateParam,
     // ---> Your code here! - Lab 5
     olafilt.setup();
     
+    // Project setup
+    noiseCancel.setup();
+    
 }
 
 
@@ -134,35 +137,46 @@ void AudioProcessing::processAudio(int16_t *outputData,
     
     if (mode == 88) {
         
-//        int block_size = 256;
-//        
-//        for (int i =0; i < 2548*2; i++) {
-//            fileNumExtraSamples = fileNumExtraSamples + block_size * i;
-//            for (int j = 0; j < outputNumSamples; j++) {
-//                tempData2[fileNumExtraSamples] = fileData[j];
-//            }
-//            
-//        }
-//            noiseCancel.filter(&tempData3[666666], tempData2, fileNumSamples);
-
-            // Upsample and filter, store data at index fileNumExtraSamples
-//            fileNumExtraSamples = fileNumExtraSamples + (fileNumSamplesNeeded * fileUpSampleFactor) / fileDownSampleFactor - outputNumSamples;
-//            fileNumExtraSamples = fileNumExtraSamples + 
-
-//            noiseCancel.filter(&tempData3[maxDataArraySize], fileData, fileNumSamples);
-//            for (int i=0; i < outputNumSamples; i++) {
-//                outputData[i] = tempData3[i];
-//            }
-//            for (int j=0; j < fileNumExtraSamples; j++) {
-//                fileExtraSamples[j] = tempData[j+outputNumSamples];
-//            }
-        
-        // MATLAB impl
-//            noiseCancel.filter(outputData, fileData, fileNumSamples);
-        
-        
         //FIR Impl
-        noiseCancel.filter(outputData,fileData,fileNumSamples,fileUpSampleFactor,fileDownSampleFactor);
+        noiseCancel.filter(&tempData[fileNumExtraSamples],
+                           fileData,fileNumSamples,fileUpSampleFactor,fileDownSampleFactor);
+        //Upsample and filter, store data at index fileNumExtraSamples
+        fileNumExtraSamples = fileNumExtraSamples + (fileNumSamplesNeeded * fileUpSampleFactor) / fileDownSampleFactor - outputNumSamples;
+        
+        for (int i=0; i < outputNumSamples; i++) {
+            outputData[i] = tempData[i];
+        }
+        for (int j=0; j < fileNumExtraSamples; j++) {
+            fileExtraSamples[j] = tempData[j+outputNumSamples];
+        }
+        
+        
+        // OTHER TRIES
+        // int block_size = 256;
+        //
+        //        for (int i =0; i < 2548*2; i++) {
+        //            fileNumExtraSamples = fileNumExtraSamples + block_size * i;
+        //            for (int j = 0; j < outputNumSamples; j++) {
+        //                tempData2[fileNumExtraSamples] = fileData[j];
+        //            }
+        //
+        //        }
+        //            noiseCancel.filter(&tempData3[666666], tempData2, fileNumSamples);
+
+                    
+        //            fileNumExtraSamples = fileNumExtraSamples +
+
+        //            noiseCancel.filter(&tempData3[maxDataArraySize], fileData, fileNumSamples);
+        //            for (int i=0; i < outputNumSamples; i++) {
+        //                outputData[i] = tempData3[i];
+        //            }
+        //            for (int j=0; j < fileNumExtraSamples; j++) {
+        //                fileExtraSamples[j] = tempData[j+outputNumSamples];
+        //            }
+                
+                // MATLAB impl
+        //            noiseCancel.filter(outputData, fileData, fileNumSamples);
+                
 
     }
     

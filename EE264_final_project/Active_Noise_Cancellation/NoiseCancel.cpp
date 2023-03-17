@@ -9,74 +9,94 @@
 
 using namespace std;
 
-void NoiseCancel::setup(const int16_t *filterCoeff,
-                      int inFilterLen){
-    if (inFilterLen < maxFilterLength){
-        filterLen = inFilterLen;
-    }
-    else{
-        filterLen = maxFilterLength;
-    }
-    for (int i = 0; i < filterLen; i++){
-        coeff[i] = filterCoeff[i]; // copy the filterCoeff array val to coeff array
-    }
+void NoiseCancel::setup(){
+//    if (inFilterLen < maxFilterLength){
+//        filterLen = inFilterLen;
+//    }
+//    else{
+//        filterLen = maxFilterLength;
+//    }
+//    for (int i = 0; i < filterLen; i++){
+//        coeff[i] = filterCoeff[i]; // copy the filterCoeff array val to coeff array
+//    }
     for (int i = 0; i < maxFilterLength; i++){
         state[i] = 0; // clear filter state array
     }
+    for (int i = 0; i < maxFilterLength; i++){
+        e[i] = 0; // clear e array
+    }
+    for (int i = 0; i < filterLen; i++){
+        coeff[i] = 0; // clear coeff array
+    }
 }
+
 // Using Lab 3; FIR method
 void NoiseCancel::filter(int16_t *outputData,
                          const int16_t *inputData,
                          int inputNumSamples,
                          int upSampleFactor,
                          int downSampleFactor){
-    int var_int = (int)var;
+//    int var_int = (int)var;
     int mu_int = (int)mu;
 
-    
-//    std::cout << mu_int << "mu int val | " << mu << "mu ---";
-
-
-    int16_t signal_plus_noise[inputNumSamples/2];
-    int16_t noise_reference[inputNumSamples/2];
-
     // Un-interleave the input data
-    for (int i = 0; i < inputNumSamples/2; i++) {
-        signal_plus_noise[i] = inputData[2*i];
+    // temp Data is signal plus noise
+    for (int i = 0; upSampleFactor * i < inputNumSamples; i++) {
+        tempData[upSampleFactor*i] = inputData[upSampleFactor*i];
+        for(int k = 1; k < upSampleFactor; k++){
+            tempData[i*upSampleFactor+k] = 0;
+        }
     }
-    for (int i = 0; i < inputNumSamples/2; i++) {
-        noise_reference[i] = inputData[2*i+1];
+    //temp Data_Int is noise ref
+    for (int i = 0; upSampleFactor * i < inputNumSamples; i++) {
+        temp_Int_Noise[upSampleFactor * i] = inputData[upSampleFactor*i+1];
+        for(int k = 1; k < upSampleFactor; k++){
+            temp_Int_Noise[i*upSampleFactor+k] = 0;
+        }
     }
+    
+    //OLD UN-INTERLEAVE
+    //    int16_t signal_plus_noise[inputNumSamples];
+    //    int16_t noise_reference[inputNumSamples];
+//    for (int i = 0; i < inputNumSamples/2; i++) {
+//        signal_plus_noise[i] = inputData[2*i];
+//    }
+//    for (int i = 0; i < inputNumSamples/2; i++) {
+//        noise_reference[i] = inputData[2*i+1];
+//    }
+//        int16_t y[inputNumSamples/2];
+//        int16_t e[inputNumSamples/2];
 
 
-        int16_t temp_r[L+1];
+        int16_t temp_r[filterLen];
 
-        int16_t mult_mu_e_r = 0;
+        int16_t mult_mu_e = 0;
 
-        int16_t y[inputNumSamples/2];
-        int16_t e[inputNumSamples/2];
 
-      int16_t tempData1[maxDataArraySize];
+
+//      int16_t tempData1[maxDataArraySize];
 
       int N = inputNumSamples*upSampleFactor;
+    
+    // FIR FILTER lab 3; Upsample
       //if (inputNumSamples*upSampleFactor <= maxDataArraySize){
-      for(int n = 0; n < inputNumSamples; n++) {
-          tempData[n*upSampleFactor] = signal_plus_noise[n];
-          for(int k = 1; k < upSampleFactor; k++){
-              tempData[n*upSampleFactor+k] = 0;
-          }
-      }
+//      for(int n = 0; n < inputNumSamples; n++) {
+//          tempData[n*upSampleFactor] = inputData[n];
+//          for(int k = 1; k < upSampleFactor; k++){
+//              tempData[n*upSampleFactor+k] = 0;
+//          }
+//      }
 
       // for 0 < n < K-1
       for (int n = 0; n < filterLen - 1; n++){
           int32_t acc = 0;
-          // added temp_r (noise ref) to here and below for loops
+          // added temp_r (noise ref that is grabbed backwards) to here and below for loops
           for (int k = 0; k < n + 1; k++){
-              temp_r[k] = noise_reference[n - k];
-              acc += tempData[n - k] * coeff[k];
+              temp_r[k] = temp_Int_Noise[n - k];
+              acc += temp_Int_Noise[n - k] * coeff[k];
           }
           for (int k = n + 1; k < filterLen; k++){
-              temp_r[k] = noise_reference[k-(n+1)];
+              temp_r[k] = state[k-(n+1)];
               acc += state[k-(n+1)] * coeff[k];
           }
           // prev FIR
@@ -92,18 +112,20 @@ void NoiseCancel::filter(int16_t *outputData,
           e[n] = tempData[n] - y;
 
           // update w
-          mult_mu_e_r = 2*mu*e[n];
-          mult_mu_e_r = (int)mult_mu_e_r;
-          for (int i = 0; i < L+1; i++) {
-              coeff[i] = coeff[i] + mult_mu_e_r*temp_r[i];
+          mult_mu_e = mu*e[n];
+//          mult_mu_e_r = (int)mult_mu_e_r;
+          for (int i = 0; i < filterLen; i++) {
+              coeff[i] = coeff[i] + mult_mu_e*temp_r[i];
+//              std::cout << coeff[i] << " | ";
           }
+          
 
       }
       for (int n = filterLen - 1; n < N; n++){
           int32_t acc = 0;
           for (int k =0; k < filterLen; k++){
-              temp_r[k] = noise_reference[n - k];
-              acc += tempData[n - k] * coeff[k];
+              temp_r[k] = temp_Int_Noise[n - k];
+              acc += temp_Int_Noise[n - k] * coeff[k];
           }
 //          tempData1[n] = acc >> 15;
           // LMS coefficient adaptation
@@ -111,22 +133,34 @@ void NoiseCancel::filter(int16_t *outputData,
           e[n] = tempData[n] - y;
 
           // update w
-          mult_mu_e_r = 2*mu_int*e[n];
-          for (int i = 0; i < L+1; i++) {
-              coeff[i] = coeff[i] + mult_mu_e_r*temp_r[i];
+          mult_mu_e = mu*e[n];
+          for (int i = 0; i < filterLen; i++) {
+              coeff[i] = coeff[i] + mult_mu_e*temp_r[i];
           }
       }
-
+      int e_bitshift = 0;
       int n = 0;
+    
+    std::ofstream ofile;
+          ofile.open("/Users/eelabsuser/Documents/Audrey/ActiveNoiseCancellation/test_data.txt", std::ios::app);
+      
+//          for (int i = 0; i < maxDataArraySize; i++) {
+//              ofile << e[i] << std::endl;
+//          }
+//          ofile.close();
+    
       while(downSampleFactor * n < inputNumSamples * upSampleFactor){
 //          outputData[n] = tempData1[downSampleFactor*n]; //what it once was in FIR
+//          e_bitshift  = e[downSampleFactor*n];
           outputData[n] = e[downSampleFactor*n];
+          ofile << outputData[n] << std::endl;
           n++;
       }
+    ofile.close();
 
 
       for (int i = 0; i < filterLen - 1; i++){
-          state[i] = tempData[inputNumSamples * upSampleFactor - 1 - i];
+          state[i] = temp_Int_Noise[inputNumSamples * upSampleFactor - 1 - i];
       }
   }
 
@@ -135,7 +169,7 @@ void NoiseCancel::filter(int16_t *outputData,
 
 
 
-//// ORIGINAL WAY of trying this from MATLAB implementation
+//// OTHER WAY of trying this from MATLAB implementation
 //::filter(int16_t *outputData,
 //                         const int16_t *inputData,
 //                           int inputNumSamples){
