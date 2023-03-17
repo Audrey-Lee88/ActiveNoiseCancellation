@@ -23,6 +23,8 @@
 
 // For project
 #include "NoiseCancel.hpp"
+#include <Accelerate/Accelerate.h>
+
 
 class AudioProcessing {
     

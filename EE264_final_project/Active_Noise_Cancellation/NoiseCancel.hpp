@@ -26,14 +26,25 @@ class NoiseCancel {
     static const int maxDataArraySize = 8192;
     
     int filterLen = 0;
+    int samp_len = 256;
     
     int16_t coeff[maxFilterLength] = {0};
     int16_t state[maxDataArraySize] = {0};
     int16_t tempData[maxDataArraySize] = {0};
+    float inputFloat[maxDataArraySize] = {0};
+    float tempData_Float[maxDataArraySize] = {0};
+    float tempInput_Float[maxDataArraySize] = {0};
+    int16_t tempData_Int[maxDataArraySize] = {0};
+    
+    float var = 2e-5;
+    int L = 25;
+    
+    float mu = 0.001/((L+1)*var);
+
     
 public:
     
-    void setup(const int16_t *filterCoeff, int inFilterLen);
+    void setup(const int16_t *filterCoeff, int samp_len);
     
     void filter(int16_t *outputData,
                 const int16_t *inputData,

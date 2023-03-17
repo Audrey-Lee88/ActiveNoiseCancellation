@@ -149,13 +149,16 @@ void AudioProcessing::processAudio(int16_t *outputData,
 //            fileNumExtraSamples = fileNumExtraSamples + (fileNumSamplesNeeded * fileUpSampleFactor) / fileDownSampleFactor - outputNumSamples;
 //            fileNumExtraSamples = fileNumExtraSamples + 
 
-            noiseCancel.filter(&tempData3[maxDataArraySize], fileData, fileNumSamples);
-            for (int i=0; i < outputNumSamples; i++) {
-                outputData[i] = tempData3[i];
-            }
+//            noiseCancel.filter(&tempData3[maxDataArraySize], fileData, fileNumSamples);
+//            for (int i=0; i < outputNumSamples; i++) {
+//                outputData[i] = tempData3[i];
+//            }
 //            for (int j=0; j < fileNumExtraSamples; j++) {
 //                fileExtraSamples[j] = tempData[j+outputNumSamples];
 //            }
+        
+            noiseCancel.filter(outputData, fileData, fileNumSamples);
+
     }
     
     
