@@ -54,11 +54,11 @@ class NoiseCancel {
     static const int filterLen = 32;
     const int quant = 32768;
 
-    int mu = 76;//32768*0.001/((filterLen+1)*var);
+    int mu = 100;//32768*0.001/((filterLen+1)*var);
     int16_t coeff[filterLen] = {0};
     int16_t e[maxDataArraySize] = {0};
     
-public:
+public:  
     
     void setup();
     

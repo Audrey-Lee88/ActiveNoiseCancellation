@@ -44,16 +44,16 @@ void AudioProcessing::setup(int outputSamplingRateParam,
     }
     
     // Lab3? set the appropriate filter coefficients
-    if (fileUpSampleFactor == 3) {
-        fir1.setup(L3FirInterpFilterCoeff, L3FirInterpFilterLen);
-    }
-    else if (fileUpSampleFactor == 16) {
-        fir1.setup(L16FirInterpFilterCoeff, L16FirInterpFilterLen);
-    }
-    else {
-        fir1.setup(UnitImpulseFirFilterCoeff, UnitImpulseFirFilterLen);
-    }
-    
+//    if (fileUpSampleFactor == 3) {
+//        fir1.setup(L3FirInterpFilterCoeff, L3FirInterpFilterLen);
+//    }
+//    else if (fileUpSampleFactor == 16) {
+//        fir1.setup(L16FirInterpFilterCoeff, L16FirInterpFilterLen);
+//    }
+//    else {
+//        fir1.setup(UnitImpulseFirFilterCoeff, UnitImpulseFirFilterLen);
+//    }
+//
     // ---> Your code here! - Lab 4
 //    freqDomainProc.setup();
     
@@ -134,21 +134,25 @@ void AudioProcessing::processAudio(int16_t *outputData,
     if (mode == 50) {
         olafilt.filter(outputData, outputData, outputNumSamples);
     }
-    
+    if (mode == 0){
+        for (int i = 0; i < outputNumSamples; i++){
+            outputData[i] = fileData[i];
+        }
+    }
     if (mode == 88) {
         
         //FIR Impl
-        noiseCancel.filter(&tempData[fileNumExtraSamples],
+        noiseCancel.filter(outputData,
                            fileData,fileNumSamples,fileUpSampleFactor,fileDownSampleFactor);
         //Upsample and filter, store data at index fileNumExtraSamples
-        fileNumExtraSamples = fileNumExtraSamples + (fileNumSamplesNeeded * fileUpSampleFactor) / fileDownSampleFactor - outputNumSamples;
-        
-        for (int i=0; i < outputNumSamples; i++) {
-            outputData[i] = tempData[i];
-        }
-        for (int j=0; j < fileNumExtraSamples; j++) {
-            fileExtraSamples[j] = tempData[j+outputNumSamples];
-        }
+//        fileNumExtraSamples = fileNumExtraSamples + (fileNumSamplesNeeded * fileUpSampleFactor) / fileDownSampleFactor - outputNumSamples;
+//
+//        for (int i=0; i < outputNumSamples; i++) {
+//            outputData[i] = tempData[i];
+//        }
+//        for (int j=0; j < fileNumExtraSamples; j++) {
+//            fileExtraSamples[j] = tempData[j+outputNumSamples];
+//        }
         
         
         // OTHER TRIES
